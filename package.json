@@ -8,20 +8,26 @@
   "dependencies": {
     "@sap/cds": "^7",
     "@sap/cds-hana": "^2",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "@sap/hana-client": "2.18.27",
     "express": "^4",
-    "form-data": "4.0.0",
-    "@sap/hana-client": "2.18.27"
+    "form-data": "4.0.0"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
-    "@sap/cds-dk": "^7"
+    "@sap/cds-dk": "^7",
+    "@sap/ux-specification": "^1.108.18"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-dmsuiapp": "cds watch --open dmsuiapp/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
       "db": "hana"
     }
-  }
+  },
+  "sapux": [
+    "app/dmsuiapp"
+  ]
 }
