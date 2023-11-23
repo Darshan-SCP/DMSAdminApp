@@ -24,10 +24,23 @@
   },
   "cds": {
     "requires": {
-      "db": "hana"
-    }
-  },
-  "sapux": [
-    "app/dmsuiapp"
-  ]
-}
+      "db": "hana",
+      "DMS_Token": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "DMS_Token",
+          "path": "/oauth/token"
+        }
+      },
+      "DMS_Dest": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "DMS_Dest",
+          "path": "/"
+        }
+      }
+    },
+    "sapux": [
+      "app/dmsuiapp"
+    ]
+  }
