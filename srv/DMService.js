@@ -2,28 +2,42 @@ const cds = require('@sap/cds')
 const axios = require('axios').default;
 const FormData = require('form-data');
 
-// const VCAP_SERVICES = JSON.parse(process.env.VCAP_SERVICES);
-// // Access the sdm credentials (Document management, Integration option instance)
-// const sdmCredentials = VCAP_SERVICES.sdm[0].credentials
+module.exports = cds.service.impl(function () {
+    const _fetchJwtToken = async function () {
+        let ConDMST = await cds.connect.to('DMS_Token');
+        try {
+     
+          var params = "?grant_type=client_credentials";
+          var path = encodeURI(params);
+          const JToken = await ConDMST.send('POST', path);
+          return JToken.access_token;
+        } catch (error) {
+          throw error;
+        }
+    }
+  this.on("GET", "DMSMaster", async (req, res) => {
 
-// const _fetchJwtToken = async function (oauthUrl, oauthClient, oauthSecret) {
-//     // This is to get the oauth token , which is used to create the folder ID
-//     return new Promise((resolve, reject) => {
-//         const tokenUrl = oauthUrl + '/oauth/token?grant_type=client_credentials&response_type=token'
-//         const config = {
-//             headers: {
-//                 Authorization: "Basic " + Buffer.from(oauthClient + ':' + oauthSecret).toString("base64")
-//             }
-//         }
-//         axios.get(tokenUrl, config)
-//             .then(response => {
-//                 resolve(response.data.access_token)
-//             })
-//             .catch(error => {
-//                 reject(error)
-//             });
-//     })
-// }
+        const lv_JWToken = await this._fetchJwtToken();
+        try {
+        let ConDMS = await cds.connect.to('DMS_Dest');
+        var JToken = 'Bearer ' + lv_JWToken;
+        const Resp = await ConDMS.send('GET', '/browser/iVEN/root', '', { 'Authorization': JToken });
+        console.log(Resp);
+        return Resp;
+    } catch (error) {
+            throw(error.message)
+    }
+
+});
+});
+
+
+
+
+
+
+
+
 
 // // This is to create a folder in the repository for every new book that is getting created.
 // // So basically we create a new folder for every book id and user can add their respective attachments in that folder.
