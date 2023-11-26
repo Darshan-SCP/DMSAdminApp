@@ -17,7 +17,7 @@ module.exports = cds.service.impl(function () {
           throw error;
         }
     }
-  this.on("GET", "DMSMaster", async (req, res) => {
+  this.on("GET", "GetRootData", async (req, res) => {
 
         const lv_JWToken = await _fetchJwtToken();
         console.log(lv_JWToken);
