@@ -2,8 +2,10 @@ const cds = require('@sap/cds')
 const axios = require('axios').default;
 const FormData = require('form-data');
 
+
+
 module.exports = cds.service.impl(function () {
-    const _fetchJwtToken = async function () {
+    async function _fetchJwtToken () {
         let ConDMST = await cds.connect.to('DMS_Token');
         try {
      
@@ -17,11 +19,12 @@ module.exports = cds.service.impl(function () {
     }
   this.on("GET", "DMSMaster", async (req, res) => {
 
-        const lv_JWToken = await this._fetchJwtToken();
+        const lv_JWToken = await _fetchJwtToken();
+        console.log(lv_JWToken);
         try {
         let ConDMS = await cds.connect.to('DMS_Dest');
         var JToken = 'Bearer ' + lv_JWToken;
-        const Resp = await ConDMS.send('GET', '/browser/iVEN/root', '', { 'Authorization': JToken });
+        const Resp = await ConDMS.send('GET', 'browser/iVEN/root', '', { 'Authorization': JToken });
         console.log(Resp);
         return Resp;
     } catch (error) {

@@ -10,6 +10,8 @@
     "@sap/cds-hana": "^2",
     "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
     "@sap/hana-client": "2.18.27",
+    "@sap-cloud-sdk/resilience": "3.8.1",
+    "@sap-cloud-sdk/http-client":"3.8.1",
     "express": "^4",
     "form-data": "4.0.0"
   },
@@ -19,8 +21,8 @@
     "@sap/ux-specification": "^1.108.18"
   },
   "scripts": {
-    "start": "cds-serve",
-    "watch-dmsuiapp": "cds watch --open dmsuiapp/webapp/index.html?sap-ui-xx-viewCache=false"
+    "start": "cds-serve"
+
   },
   "cds": {
     "requires": {
@@ -36,11 +38,9 @@
         "kind": "rest",
         "credentials": {
           "destination": "DMS_Dest",
-          "path": "/"
+          "path": ""
         }
       }
-    },
-    "sapux": [
-      "app/dmsuiapp"
-    ]
+    }
   }
+}
