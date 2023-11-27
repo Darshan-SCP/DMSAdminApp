@@ -2,6 +2,7 @@
 service DMSmodel {};
 
 @cds.external: true
+@cds.persistence.skip : true
 entity DMSmodel.GetRootData {
     key objectId                   : String(100) not null;
         versionSeriesContentLength : String(10);
@@ -32,4 +33,12 @@ entity DMSmodel.GetRootData {
         isLatestMajorVersion       : Boolean;
         contentStreamLength        : Int64;
 
+}
+@cds.external: true
+@cds.persistence.skip : true
+entity DMSmodel.RootFolder {
+
+key externalId : String(20);
+    displayName : String(20);
+    description : String(100);
 }
