@@ -128,9 +128,23 @@ module.exports = cds.service.impl(function () {
     }
 
   });
+  this.on("GET", "RootFolder", async (req, res) => {
+    const lv_JWToken = await _fetchJwtToken();
+    try {
+      let ConDMS = await cds.connect.to('DMS_Dest');
+      var JToken = 'Bearer ' + lv_JWToken;
+      const Resp = await ConDMS.send('GET', 'browser', '', { 'Authorization': JToken });
+      var dlist = Resp;
+      var output = [];
+      return output;
+    } catch (error) {
+      error.message = error.reason.response.body.message;
+      throw (error)
+    }
+
+  });
 
 });
-
 
 // // This is to create a folder in the repository for every new book that is getting created.
 // // So basically we create a new folder for every book id and user can add their respective attachments in that folder.
