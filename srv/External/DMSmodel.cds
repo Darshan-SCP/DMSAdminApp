@@ -2,10 +2,7 @@
 service DMSmodel {};
 
 @cds.external: true
-
-
 entity DMSmodel.GetRootData {
-
     key objectId                   : String(100) not null;
         versionSeriesContentLength : String(10);
         lastModifiedBy             : String;

@@ -18,17 +18,86 @@ module.exports = cds.service.impl(function () {
         }
     }
   this.on("GET", "GetRootData", async (req, res) => {
-
+    // var needcount = req.query.SELECT.count
+    // var skip = req.query.SELECT.limit.offset.val
+    // / var top = req.query.SELECT.limit.rows.val
         const lv_JWToken = await _fetchJwtToken();
-        console.log(lv_JWToken);
         try {
         let ConDMS = await cds.connect.to('DMS_Dest');
         var JToken = 'Bearer ' + lv_JWToken;
         const Resp = await ConDMS.send('GET', 'browser/iVEN/root', '', { 'Authorization': JToken });
-        console.log(Resp);
-        return Resp;
+       var dlist =  Resp.objects;
+          var output= [];
+          
+       dlist.forEach(function(dlistvalue) {
+        var item = {};
+        item.objectId  =     dlistvalue.object.properties["cmis:objectId"].value;   
+        if (dlistvalue.object.properties.hasOwnProperty('sap:versionSeriesContentLength')) {
+         item.versionSeriesContentLength =     dlistvalue.object.properties["sap:versionSeriesContentLength"].value; 
+      }   else{
+        item.versionSeriesContentLength =  '';
+      }
+      if (dlistvalue.object.properties.hasOwnProperty('cmis:versionLabel')) {
+        item.versionLabel       =     dlistvalue.object.properties["cmis:versionLabel"].value;  
+     }      else{
+      item.versionLabel =  '';
+    } 
+        item.lastModifiedBy        =     dlistvalue.object.properties["cmis:lastModifiedBy"].value;      
+        if (dlistvalue.object.properties.hasOwnProperty('cmis:contentStreamId')) {
+          item.contentStreamId   =     dlistvalue.object.properties["cmis:contentStreamId"].value; 
+       }    else{
+        item.contentStreamId =  '';
+      }                 
+        item.objectTypeId     =     dlistvalue.object.properties["cmis:objectTypeId"].value;   
+        if (dlistvalue.object.properties.hasOwnProperty('cmis:contentStreamMimeType')) {
+        item.contentStreamMimeType     =     dlistvalue.object.properties["cmis:contentStreamMimeType"].value; 
+       }    else{
+        item.contentStreamMimeType =  '';
+      }       
+        item.createdBy =     dlistvalue.object.properties["cmis:createdBy"].value;                 
+        item.baseTypeId  =     dlistvalue.object.properties["cmis:baseTypeId"].value;               
+        item.sap_owner   =     dlistvalue.object.properties["sap:owner"].value;               
+        item.creationDate   =     dlistvalue.object.properties["cmis:creationDate"].value;            
+        item.changeToken    =     dlistvalue.object.properties["cmis:changeToken"].value;  
+        if (dlistvalue.object.properties.hasOwnProperty('cmis:isVersionSeriesCheckedOut')) {
+          item.isVersionSeriesCheckedOut  =     dlistvalue.object.properties["cmis:isVersionSeriesCheckedOut"].value;  
+         }    else{
+          item.isVersionSeriesCheckedOut =  '';
+        } 
+         if (dlistvalue.object.properties.hasOwnProperty('cmis:isMajorVersion')) {
+          item.isMajorVersion =     dlistvalue.object.properties["cmis:isMajorVersion"].value;       
+         }     else{
+          item.isMajorVersion =  '';
+        }   
+        item.name   =     dlistvalue.object.properties["cmis:name"].value; 
+        if (dlistvalue.object.properties.hasOwnProperty('cmis:isLatestVersion')) {
+          item.isLatestVersion      =     dlistvalue.object.properties["cmis:isLatestVersion"].value;       
+         }   else{
+          item.isLatestVersion =  '';
+        } 
+        item.lastModificationDate   =     dlistvalue.object.properties["cmis:lastModificationDate"].value; 
+        if (dlistvalue.object.properties.hasOwnProperty('cmis:versionSeriesId')) {
+            item.versionSeriesId      =     dlistvalue.object.properties["cmis:versionSeriesId"].value; 
+         }   else{
+          item.versionSeriesId =  '';
+        } 
+         if (dlistvalue.object.properties.hasOwnProperty('cmis:isLatestMajorVersion')) {
+            item.isLatestMajorVersion    =     dlistvalue.object.properties["cmis:isLatestMajorVersion"].value; 
+         }   else{
+          item.isLatestMajorVersion =  '';
+        } 
+         if (dlistvalue.object.properties.hasOwnProperty('cmis:contentStreamLength')) {
+           item.contentStreamLength   =     dlistvalue.object.properties["cmis:contentStreamLength"].value;  
+         }   else{
+          item.contentStreamLength =  '';
+        } 
+          output.push(item);
+        console.log(output);
+       });
+  
+        return output;
     } catch (error) {
-            throw(error.message)
+            throw(error)
     }
 
 });
