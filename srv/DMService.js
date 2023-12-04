@@ -134,8 +134,13 @@ module.exports = cds.service.impl(function () {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
       const Resp = await ConDMS.send('GET', 'browser', '', { 'Authorization': JToken });
-      var dlist = Resp;
-      var output = [];
+      // Resp.forEach(function (mlistvalue) {
+      //   console.log(mlistvalue);
+      // });
+      var output = {};
+      output.DataSet = Resp;
+      var a = [];
+      a = Resp;
       return output;
     } catch (error) {
       error.message = error.reason.response.body.message;
