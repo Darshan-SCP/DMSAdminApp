@@ -1,25 +1,15 @@
 const cds = require('@sap/cds')
 const axios = require('axios').default;
 const FormData = require('form-data');
+const DMSlib = require("./Lib/DMS_Lib");
 
 module.exports = cds.service.impl(function () {
-  async function _fetchJwtToken() {
-    let ConDMST = await cds.connect.to('DMS_Token');
-    try {
 
-      var params = "?grant_type=client_credentials";
-      var path = encodeURI(params);
-      const JToken = await ConDMST.send('POST', path);
-      return JToken.access_token;
-    } catch (error) {
-      throw error;
-    }
-  }
   this.on("GET", "GetRootData", async (req, res) => {
     // var needcount = req.query.SELECT.count
     // var skip = req.query.SELECT.limit.offset.val
     // / var top = req.query.SELECT.limit.rows.val
-    const lv_JWToken = await _fetchJwtToken();
+    const lv_JWToken = await DMSlib._fetchJwtToken();
     try {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
@@ -114,7 +104,7 @@ module.exports = cds.service.impl(function () {
         "hashAlgorithms": "None"
       }
     };
-    const lv_JWToken = await _fetchJwtToken();
+    const lv_JWToken = await DMSlib._fetchJwtToken();
     try {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
@@ -129,7 +119,7 @@ module.exports = cds.service.impl(function () {
 
   });
   this.on("GET", "RootFolder", async (req, res) => {
-    const lv_JWToken = await _fetchJwtToken();
+    const lv_JWToken = await DMSlib._fetchJwtToken();
     try {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
@@ -138,7 +128,7 @@ module.exports = cds.service.impl(function () {
       //   console.log(mlistvalue);
       // });
       var output = {};
-      output.DataSet = Resp;
+      output.DataSet = JSON.stringify(Resp);
       var a = [];
       a = Resp;
       return output;

@@ -41,4 +41,5 @@ entity DMSmodel.RootFolder {
 key externalId : String(20);
     displayName : String(20);
     description : String(100);
+    DataSet:String;
 }
