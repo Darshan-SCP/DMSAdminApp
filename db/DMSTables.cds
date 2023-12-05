@@ -12,7 +12,8 @@ entity DMS_MASTER : cuid, managed {
   folderId     : String;
 }
 
-entity DMS_ROOT_FOLDER : {
+entity ROOT_FOLDER {
+  key rootFolderId : String(36);
   DisplayName    : String(15);
   externalId     : String(15);
   description    : String(100);
