@@ -9,6 +9,7 @@ module.exports = cds.service.impl(function () {
     // var needcount = req.query.SELECT.count
     // var skip = req.query.SELECT.limit.offset.val
     // / var top = req.query.SELECT.limit.rows.val
+
     const lv_JWToken = await DMSlib._fetchJwtToken();
     try {
       let ConDMS = await cds.connect.to('DMS_Dest');
@@ -89,7 +90,6 @@ module.exports = cds.service.impl(function () {
     }
 
   });
-
   this.on("CREATE", "RootFolder", async (req, res) => {
     var body = {
       "repository": {
