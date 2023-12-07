@@ -90,56 +90,30 @@ module.exports = cds.service.impl(function () {
     }
 
   });
-  this.on("CREATE", "RootFolder", async (req, res) => {
-    var body = {
-      "repository": {
-        "displayName": req.data.externalId,
-        "description": req.data.description,
-        "repositoryType": "internal",
-        "isVersionEnabled": "true",
-        "isVirusScanEnabled": "true",
-        "isContentBridgeEnabled": "true",
-        "externalId": req.data.externalId,
-        "skipVirusScanForLargeFile": "true",
-        "hashAlgorithms": "None"
-      }
-    };
-    const lv_JWToken = await DMSlib._fetchJwtToken();
-    try {
-      let ConDMS = await cds.connect.to('DMS_Dest');
-      var JToken = 'Bearer ' + lv_JWToken;
-      const Resp = await ConDMS.send('POST', '/rest/v2/repositories', body, { 'Authorization': JToken });
-      var dlist = Resp;
-      var output = [];
-      return output;
-    } catch (error) {
-      error.message = error.reason.response.body.message;
-      throw (error)
-    }
-
-  });
   this.on("GET", "RootFolder", async (req, res) => {
-    const lv_JWToken = await DMSlib._fetchJwtToken();
-    try {
-      let ConDMS = await cds.connect.to('DMS_Dest');
-      var JToken = 'Bearer ' + lv_JWToken;
-      const Resp = await ConDMS.send('GET', 'browser', '', { 'Authorization': JToken });
-      // Resp.forEach(function (mlistvalue) {
-      //   console.log(mlistvalue);
-      // });
-      var output = {};
-      output.DataSet = JSON.stringify(Resp);
-      var a = [];
-      a = Resp;
-      return output;
-    } catch (error) {
-      error.message = error.reason.response.body.message;
-      throw (error)
-    }
+  //     //to get main repositorie list in DMS with storage data
+  //    // exmp ->>>> _GetRepositores();
+  //     let a = await DMSlib._GetRepositores();
 
+    //to create main repositorie in DMS 
+    //input is required exmp ->>>> _CreateRepositorie("iVEN","iVEN Main Folder");
+    // return await DMSlib._CreateRepositorie(req.data.externalId,req.data.description);
+    //let a = await DMSlib._CreateRepositorie("iVEN", "iVEN Main Folder");
+    
+  //to delete main repository folder - avoid to use this
+  //pass repository id from the data set - field name ->> id
+  let a = await DMSlib._DeleteRepositore("3ddb38a2-ee4c-4318-8170-3d02e24e4947");
+
+    
+    var output = {};
+    output.DataSet = JSON.stringify(a);
+    return output;
   });
+  //   this.on("GET", "RootFolder", async (req, res) => {
+
 
 });
+
 
 // // This is to create a folder in the repository for every new book that is getting created.
 // // So basically we create a new folder for every book id and user can add their respective attachments in that folder.
