@@ -44,11 +44,17 @@ return a;
 
 //Delete subfolder data of main repo and subfolder 
 
-    var id = 'xgTAihvSNZ4EZrIti0uOM65hhOnId_O8gAHgAjLGv-Q'; //optional if need to read main repo iVEN
-    var RepoID = 'iVEN';
-    let a = await DMSlib._DeleteSubFolder(id , RepoID);
+    // var id = 'BQ1ayzJ0aYlro-p-M2dm77-zT7RyDN9A_eCSL0PdsKQ'; //optional if need to read main repo iVEN
+    // var RepoID = 'iVEN';
+    // let a = await DMSlib._DeleteSubFolder(id , RepoID);
 
 
+    var output = {};
+    output.DataSet = JSON.stringify(a);
+    return output;
+  });
+
+  this.on("POST", "RootFolder", async (req, res) => {
     var output = {};
     output.DataSet = JSON.stringify(a);
     return output;

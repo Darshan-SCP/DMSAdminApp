@@ -124,18 +124,18 @@ module.exports = {
       var path = 'browser/' + RepoID + '/root';
       var JToken = 'Bearer ' + lv_JWToken;
 
-      const data = 
-       `objectId=${rootFolderId}`+
-       `&cmisaction=createFolder`+
-       `&propertyId[0]=cmis:name`+
-       `&propertyValue[0]=${forlderName}`+
-       `&propertyId[1]=cmis:objectTypeId`+
-       `&propertyValue[1]=cmis:folder`+
-       `&succinct='true'`;
+      const data =
+        `objectId=${rootFolderId}` +
+        `&cmisaction=createFolder` +
+        `&propertyId[0]=cmis:name` +
+        `&propertyValue[0]=${forlderName}` +
+        `&propertyId[1]=cmis:objectTypeId` +
+        `&propertyValue[1]=cmis:folder` +
+        `&succinct='true'`;
       const headers = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": JToken };
 
 
-      const Resp = await ConDMS.send(  "POST", path , data, headers);
+      const Resp = await ConDMS.send("POST", path, data, headers);
       return Resp;
     } catch (error) {
       var err = error.reason.response.body;
@@ -143,12 +143,12 @@ module.exports = {
     }
 
   },
-  _getSubFolderItems: async function ( RepoID, forlderName){
+  _getSubFolderItems: async function (RepoID, forlderName) {
     const lv_JWToken = await this._fetchJwtToken();
     try {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
-      const Resp = await ConDMS.send('GET', 'browser/'+ RepoID +'/root/' + forlderName, '', { 'Authorization': JToken });
+      const Resp = await ConDMS.send('GET', 'browser/' + RepoID + '/root/' + forlderName, '', { 'Authorization': JToken });
       var dlist = Resp.objects;
       var output = [];
 
@@ -223,24 +223,33 @@ module.exports = {
       throw (error)
     }
   },
-  _DeleteSubFolder:async function(FolderId,RepoID){
+  _DeleteSubFolder: async function (FolderId, RepoID) {
     try {
       const lv_JWToken = await this._fetchJwtToken();
       let ConDMS = await cds.connect.to('DMS_Dest');
       var path = 'browser/' + RepoID + '/root';
       var JToken = 'Bearer ' + lv_JWToken;
 
-      const data = 
-       `objectId=${FolderId}`+
-       `&cmisaction=deleteTree`+
-       `&continueOnFalure='true'`;
-      const headers = { "Content-Type": "multipart/form-data", "Authorization": JToken };
+      const data =
+        `objectId=${FolderId}` +
+        `&cmisaction=deleteTree` +
+        `&continueOnFalure='true'`;
+      const headers = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": JToken };
 
-      const Resp = await ConDMS.send(  "POST", path , data, headers);
+      const Resp = await ConDMS.send("POST", path, data, headers);
       return Resp;
     } catch (error) {
-      var err = error.reason.response.body;
-      return err;
+      var restxt = {};
+      restxt.status = error.reason.response.status;
+      restxt.statusText = error.reason.response.statusText;
+      if (restxt.status == 200) {
+        restxt.statusText = "Folder/object Deleted sucessfully";
+      }
+
+      return restxt;
     }
+  },
+  _uploadDocument: async function(){
+    
   }
 }
