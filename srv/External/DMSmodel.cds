@@ -43,3 +43,15 @@ key externalId : String(20);
     description : String(100);
     DataSet:String;
 }
+@cds.external: true
+@cds.persistence.skip : true
+entity DMSmodel.MediaFile {
+    key id        : Integer;
+        @Core.MediaType   : mediaType
+        content   : LargeString;
+        mediaType : String @Core.IsMediaType;
+        fileName  : String;
+        url       : String;
+        size      : Integer;
+
+}
