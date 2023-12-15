@@ -272,8 +272,7 @@ module.exports = {
       if (restxt.status == 200) {
         restxt.statusText = "object Name changed Successfully";
       }
-
       return restxt;
     }
   }
-S
+}
