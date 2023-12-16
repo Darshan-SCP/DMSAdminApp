@@ -64,10 +64,10 @@ module.exports = cds.service.impl(function () {
     return output;
   });
 
-  this.on("POST", "MediaFile", async (req, res) => {
+  this.on("UPDATE", "MediaFile", async (req, res) => {
     var ID = randomUUID();
     const url = req._.req.path;
-    if (url.includes('content')) {
+    // if (url.includes('content')) {
       const db = await cds.connect.to('db');
       const obj = {};
       obj.ID = ID;
@@ -81,13 +81,12 @@ module.exports = cds.service.impl(function () {
         chunks.push(chunk);
       })
 
-      stream.on('end', () => {
+      stream.on('end', async () => {
         obj.content = Buffer.concat(chunks).toString('base64');
-
-
        // db.INSERT.into('MediaFile').entries(obj);
       })
-    }
+    // }
+    var a = req.data.content.pipe(stream);
     return obj;
   });
 });

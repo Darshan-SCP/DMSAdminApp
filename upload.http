@@ -2,7 +2,7 @@
 @port=4004
 @protocol=http
 
-POST {{protocol}}://{{host}}:{{port}}/odata/v2/dms-srv/MediaFile   HTTP/1.1
+PUT  {{protocol}}://{{host}}:{{port}}/odata/v4/dms-srv/MediaFile(1f625369-0294-47c4-bc0a-6755ddc31b8d)/content   HTTP/1.1
 Content-Type: application/pdf
 slug: invoice.pdf
 
