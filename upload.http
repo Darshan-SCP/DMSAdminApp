@@ -1,0 +1,9 @@
+@host=localhost
+@port=4004
+@protocol=http
+
+POST {{protocol}}://{{host}}:{{port}}/odata/v2/dms-srv/MediaFile   HTTP/1.1
+Content-Type: application/pdf
+slug: invoice.pdf
+
+< ./invoice.pdf
