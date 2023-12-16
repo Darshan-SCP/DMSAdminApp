@@ -21,12 +21,13 @@
     "@sap/ux-specification": "^1.108.18"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "dsql":  "cds deploy -2 sqlite:db.sqlite"
 
   },
   "cds": {
     "requires": {
-      "db": "hana",
+      "db": "sqlite",
       "DMS_Token": {
         "kind": "rest",
         "credentials": {

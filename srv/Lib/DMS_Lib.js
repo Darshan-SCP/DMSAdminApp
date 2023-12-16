@@ -260,18 +260,17 @@ module.exports = {
         `&cmisaction=update` +
         `&propertyId[0]=cmis:name` +
         `&propertyValue[0]=${NewforlderName}` ;
-    
       const headers = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": JToken };
-
       const Resp = await ConDMS.send("POST", path, data, headers);
-      return Resp;
+      var restxt = {};
+      restxt.name = Resp.properties["cmis:name"].value;
+      restxt.message  = 'Object name changed Successfully';
+      restxt.status = 200;
+      return restxt;
     } catch (error) {
       var restxt = {};
       restxt.status = error.reason.response.status;
       restxt.statusText = error.reason.response.statusText;
-      if (restxt.status == 200) {
-        restxt.statusText = "object Name changed Successfully";
-      }
       return restxt;
     }
   }
