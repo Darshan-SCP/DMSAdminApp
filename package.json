@@ -6,14 +6,16 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@cap-js-community/odata-v2-adapter": "^1.11.6",
+    "@sap-cloud-sdk/http-client": "3.8.1",
+    "@sap-cloud-sdk/resilience": "3.8.1",
     "@sap/cds": "^7",
     "@sap/cds-hana": "^2",
-    "@cap-js-community/odata-v2-adapter": "^1.11.6",
     "@sap/hana-client": "2.18.27",
-    "@sap-cloud-sdk/resilience": "3.8.1",
-    "@sap-cloud-sdk/http-client":"3.8.1",
+    "crypto": "^1.0.1",
     "express": "^4",
-    "form-data": "4.0.0"
+    "form-data": "4.0.0",
+    "stream": "^0.0.2"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
@@ -22,8 +24,7 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "dsql":  "cds deploy -2 sqlite:db.sqlite"
-
+    "dsql": "cds deploy -2 sqlite:db.sqlite"
   },
   "cds": {
     "requires": {
@@ -43,7 +44,7 @@
         }
       }
     },
-     "cov2ap": {
+    "cov2ap": {
       "plugin": true
     }
   }

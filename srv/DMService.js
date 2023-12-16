@@ -1,16 +1,19 @@
 const cds = require('@sap/cds')
 const FormData = require('form-data');
 const DMSlib = require("./Lib/DMS_Lib");
+const { randomUUID } = require('crypto');
+const { Readable, PassThrough } = require('stream');
+
 
 module.exports = cds.service.impl(function () {
 
   this.on("GET", "GetRootData", async (req, res) => {
 
 
-        var fname = "20000002";
+    var fname = "20000002";
     var RepoID = 'iVEN';
-    let a = await DMSlib. _getSubFolderItems(id,RepoID, fname);
-return a;
+    let a = await DMSlib._getSubFolderItems(id, RepoID, fname);
+    return a;
   });
   this.on("GET", "RootFolder", async (req, res) => {
     //     //to get main repositorie list in DMS with storage data
@@ -36,25 +39,25 @@ return a;
     // let a = await DMSlib._createSubFolder(id,RepoID, fname);
 
 
-//read subfolder data of main repo and subfolder 
+    //read subfolder data of main repo and subfolder 
 
     // var fname = '10000001'; //optional if need to read main repo iVEN
     // var RepoID = 'iVEN';
     // let a = await DMSlib._getSubFolderItems(RepoID, fname);
 
-//Delete subfolder data of main repo and subfolder 
+    //Delete subfolder data of main repo and subfolder 
 
     // var id = 'BQ1ayzJ0aYlro-p-M2dm77-zT7RyDN9A_eCSL0PdsKQ'; //optional if need to read main repo iVEN
     // var RepoID = 'iVEN';
     // let a = await DMSlib._DeleteSubFolder(id , RepoID);
-    
-    
+
+
     // to rename any folder - pass folder id
     //_RenameFolder: async function (ObjectId, RepoID, NewforlderName)
     var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //optional if need to read main repo iVEN
     var RepoID = 'iVEN';
     var NewforlderName = '700000001';
-    let a = await DMSlib._RenameFolder(ObjectId , RepoID,NewforlderName);
+    let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
 
     var output = {};
     output.DataSet = JSON.stringify(a);
@@ -62,9 +65,30 @@ return a;
   });
 
   this.on("POST", "MediaFile", async (req, res) => {
-    var output = {};
-    output.DataSet = JSON.stringify(a);
-    return output;
+    var ID = randomUUID();
+    const url = req._.req.path;
+    if (url.includes('content')) {
+      const db = await cds.connect.to('db');
+      const obj = {};
+      obj.ID = ID;
+      obj.fileName = req.headers.slug;
+      obj.mediaType = req.headers['content-type']
+      obj.url = `/odata/v4/dms-srv/MediaFile(${ID})/content`
+      const stream = new PassThrough()
+      const chunks = []
+
+      stream.on('data', (chunk) => {
+        chunks.push(chunk);
+      })
+
+      stream.on('end', () => {
+        obj.content = Buffer.concat(chunks).toString('base64');
+
+
+       // db.INSERT.into('MediaFile').entries(obj);
+      })
+    }
+    return obj;
   });
 });
 
