@@ -56,39 +56,60 @@ module.exports = cds.service.impl(function () {
     //_RenameFolder: async function (ObjectId, RepoID, NewforlderName)
     var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //optional if need to read main repo iVEN
     var RepoID = 'iVEN';
-    var NewforlderName = '700000001';
-    let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
+    // var NewforlderName = '700000001';
+    // let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
+
+    let a = await DMSlib._DownloadFile(ObjectId,RepoID)
 
     var output = {};
     output.DataSet = JSON.stringify(a);
     return output;
   });
+  this.on("GET", "MediaFile", async (req, res) => {
+   // var ID = randomUUID();
 
-  this.on("UPDATE", "MediaFile", async (req, res) => {
-    var ID = randomUUID();
-    const url = req._.req.path;
-    // if (url.includes('content')) {
-      const db = await cds.connect.to('db');
-      const obj = {};
-      obj.ID = ID;
-      obj.fileName = req.headers.slug;
-      obj.mediaType = req.headers['content-type']
-      obj.url = `/odata/v4/dms-srv/MediaFile(${ID})/content`
-      const stream = new PassThrough()
-      const chunks = []
+  //Fetch the url from where the req is triggered       
+  const url = req._.req.path;
+  //If the request url contains keyword "content"
+  // then read the media content
+  if (url.includes("content")) {
+      const id = '1f625369-0294-47c4-bc0a-6755ddc31b8d';
+      var tx = cds.transaction(req);
 
-      stream.on('data', (chunk) => {
-        chunks.push(chunk);
-      })
-
-      stream.on('end', async () => {
-        obj.content = Buffer.concat(chunks).toString('base64');
-       // db.INSERT.into('MediaFile').entries(obj);
-      })
-    // }
-    var a = req.data.content.pipe(stream);
-    return obj;
+      let connection = await cds.connect.to('db');
+			let mediaObj = await connection.run(
+				SELECT `content ,  mediaType`
+					.from`${connection.entities['MediaFile']}`
+					.where({ ID : id }));
+  
+      /*********Decoding from Base64**********/
+     
+      if (mediaObj.length <= 0) {
+          req.reject(404, "Media not found for the ID");
+          return;
+      }
+      var decodedMedia = "";           
+      decodedMedia = new Buffer.from( mediaObj[0].content.toString().split(";base64,").pop() , "base64" );
+  var output =  await  DMSlib._formatResult(decodedMedia, mediaObj.mediaType);  
+  return      output             
+ /****************************************/
+} else return next();
   });
+
+  
+  this.on("UPDATE", "MediaFile", async (req, res) => {
+    var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //optional if need to read main repo iVEN
+    var RepoID = 'iVEN';
+    let a = await DMSlib._DownloadFile(ObjectId,RepoID);
+    var output = {};
+    output.content = a;
+    output.fileName = "test.pdf"
+    output.mediaType = "application/pdf";
+
+  return output;
+
+});
+
 });
 
 

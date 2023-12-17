@@ -25,11 +25,8 @@ entity MediaFile : cuid {
   @Core.MediaType                  : mediaType
   content   : LargeBinary;
   fileName  : String;
-
   @Core.IsMediaType                : true
   mediaType : String;
-
   @Core.IsURL
   url       : String;
-
 }

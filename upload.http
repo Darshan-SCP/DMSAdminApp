@@ -7,3 +7,5 @@ Content-Type: application/pdf
 slug: invoice.pdf
 
 < ./invoice.pdf
+###
+GET   {{protocol}}://{{host}}:{{port}}/odata/v2/dms-srv/MediaFile(guid'1f625369-0294-47c4-bc0a-6755ddc31b8d')/$value  HTTP/1.1

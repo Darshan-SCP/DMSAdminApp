@@ -1,7 +1,7 @@
 const cds = require("@sap/cds");
 const axios = require('axios').default;
 const FormData = require('form-data');
-
+const { Readable, PassThrough } = require('stream');
 
 module.exports = {
 
@@ -259,12 +259,12 @@ module.exports = {
         `objectId=${ObjectId}` +
         `&cmisaction=update` +
         `&propertyId[0]=cmis:name` +
-        `&propertyValue[0]=${NewforlderName}` ;
+        `&propertyValue[0]=${NewforlderName}`;
       const headers = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": JToken };
       const Resp = await ConDMS.send("POST", path, data, headers);
       var restxt = {};
       restxt.name = Resp.properties["cmis:name"].value;
-      restxt.message  = 'Object name changed Successfully';
+      restxt.message = 'Object name changed Successfully';
       restxt.status = 200;
       return restxt;
     } catch (error) {
@@ -273,5 +273,28 @@ module.exports = {
       restxt.statusText = error.reason.response.statusText;
       return restxt;
     }
+  },
+  _DownloadFile: async function (ObjectID, RepoID) {
+    const lv_JWToken = await this._fetchJwtToken();
+    try {
+      let ConDMS = await cds.connect.to('DMS_Dest');
+      var JToken = 'Bearer ' + lv_JWToken;
+      const Resp = await ConDMS.send('GET',
+        'browser/iVEN/root?objectId=BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg&download=attachment'
+        , '', { 'Authorization': JToken });
+      return Resp;
+    } catch (error) {
+      console.error();
+    }
+  },
+  _formatResult: async function (decodedMedia, mediaType) {
+  const readable = new Readable();
+  const result = new Array();
+  readable.push(decodedMedia);
+  readable.push(null);
+  return {
+      value: readable,
+      '*@odata.mediaContentType': mediaType
   }
+}
 }
