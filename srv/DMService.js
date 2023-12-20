@@ -18,7 +18,7 @@ module.exports = cds.service.impl(function () {
   this.on("GET", "RootFolder", async (req, res) => {
     //     //to get main repositorie list in DMS with storage data
     //    // exmp ->>>> _GetRepositores();
-    //     let a = await DMSlib._GetRepositores();
+    // let a = await DMSlib._GetRepositores();
 
     //to create main repositorie in DMS 
     //input is required exmp ->>>> _CreateRepositorie("iVEN","iVEN Main Folder");
@@ -41,9 +41,9 @@ module.exports = cds.service.impl(function () {
 
     //read subfolder data of main repo and subfolder 
 
-    // var fname = '10000001'; //optional if need to read main repo iVEN
-    // var RepoID = 'iVEN';
-    // let a = await DMSlib._getSubFolderItems(RepoID, fname);
+    var fname = '600000001'; //optional if need to read main repo iVEN
+    var RepoID = 'iVEN';
+    let a = await DMSlib._getSubFolderItems(RepoID, fname);
 
     //Delete subfolder data of main repo and subfolder 
 
@@ -59,56 +59,47 @@ module.exports = cds.service.impl(function () {
     // var NewforlderName = '700000001';
     // let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
 
-    let a = await DMSlib._DownloadFile(ObjectId,RepoID)
+    // let a = await DMSlib._DownloadFile(ObjectId,RepoID)
 
     var output = {};
     output.DataSet = JSON.stringify(a);
     return output;
   });
-  this.on("GET", "MediaFile", async (req, res) => {
-   // var ID = randomUUID();
+  this.on("CREATE", "MediaFile", async (req, res) => {
+    // var ID = randomUUID();
 
-  //Fetch the url from where the req is triggered       
-  const url = req._.req.path;
-  //If the request url contains keyword "content"
-  // then read the media content
-  if (url.includes("content")) {
-      const id = '1f625369-0294-47c4-bc0a-6755ddc31b8d';
-      var tx = cds.transaction(req);
+    const url = req._.req.path;
 
-      let connection = await cds.connect.to('db');
-			let mediaObj = await connection.run(
-				SELECT `content ,  mediaType`
-					.from`${connection.entities['MediaFile']}`
-					.where({ ID : id }));
-  
-      /*********Decoding from Base64**********/
-     
-      if (mediaObj.length <= 0) {
-          req.reject(404, "Media not found for the ID");
-          return;
-      }
-      var decodedMedia = "";           
-      decodedMedia = new Buffer.from( mediaObj[0].content.toString().split(";base64,").pop() , "base64" );
-  var output =  await  DMSlib._formatResult(decodedMedia, mediaObj.mediaType);  
-  return      output             
- /****************************************/
-} else return next();
+    const id = '1f625369-0294-47c4-bc0a-6755ddc31b8d';
+    var tx = cds.transaction(req);
+    let connection = await cds.connect.to('db');
+    let mediaObj = await connection.run(
+      SELECT`content ,  mediaType`
+        .from`${connection.entities['MediaFile']}`
+        .where({ ID: id }));
+
+    if (mediaObj.length <= 0) {
+      req.reject(404, "Media not found for the ID");
+      return;
+    }
+    var decodedMedia = "";
+    decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
+    var output = await DMSlib._formatResult(decodedMedia, mediaObj.mediaType);
+    return output
+
   });
-
-  
-  this.on("UPDATE", "MediaFile", async (req, res) => {
-    var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //optional if need to read main repo iVEN
+  this.on("GET", "MediaFile", async (req, res) => {
+    var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
     var RepoID = 'iVEN';
-    let a = await DMSlib._DownloadFile(ObjectId,RepoID);
+    let a = await DMSlib._DownloadFile(ObjectId, RepoID);
     var output = {};
     output.content = a;
     output.fileName = "test.pdf"
     output.mediaType = "application/pdf";
 
-  return output;
+    return output;
 
-});
+  });
 
 });
 

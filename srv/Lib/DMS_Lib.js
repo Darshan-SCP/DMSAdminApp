@@ -291,7 +291,7 @@ module.exports = {
   const readable = new Readable();
   const result = new Array();
   readable.push(decodedMedia);
-  readable.push(null);
+  // readable.push(null);
   return {
       value: readable,
       '*@odata.mediaContentType': mediaType
