@@ -249,6 +249,32 @@ module.exports = {
       return restxt;
     }
   },
+  _DeleteFile: async function (ObjectId, RepoID) {
+    try {
+      const lv_JWToken = await this._fetchJwtToken();
+      let ConDMS = await cds.connect.to('DMS_Dest');
+      var path = 'browser/' + RepoID + '/root';
+      var JToken = 'Bearer ' + lv_JWToken;
+
+      const data =
+        `objectId=${ObjectId}` +
+        `&cmisaction=delete` +
+        `&continueOnFalure='true'`;
+      const headers = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": JToken };
+
+      const Resp = await ConDMS.send("POST", path, data, headers);
+      return Resp;
+    } catch (error) {
+      var restxt = {};
+      restxt.status = error.reason.response.status;
+      restxt.statusText = error.reason.response.statusText;
+      if (restxt.status == 200) {
+        restxt.statusText = "File/object Deleted Successfully";
+      }
+
+      return restxt;
+    }
+  },
   _RenameFolder: async function (ObjectId, RepoID, NewforlderName) {
     const lv_JWToken = await this._fetchJwtToken();
     let ConDMS = await cds.connect.to('DMS_Dest');
