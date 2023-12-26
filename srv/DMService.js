@@ -41,9 +41,9 @@ module.exports = cds.service.impl(function () {
 
     //read subfolder data of main repo and subfolder 
 
-    var fname = '600000001'; //optional if need to read main repo iVEN
-    var RepoID = 'iVEN';
-    let a = await DMSlib._getSubFolderItems(RepoID, fname);
+    // var fname = '600000001'; //optional if need to read main repo iVEN
+    // var RepoID = 'iVEN';
+    // let a = await DMSlib._getSubFolderItems(RepoID, fname);
 
     //Delete subfolder data of main repo and subfolder 
 
@@ -54,13 +54,17 @@ module.exports = cds.service.impl(function () {
 
     // to rename any folder - pass folder id
     //_RenameFolder: async function (ObjectId, RepoID, NewforlderName)
-    var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //optional if need to read main repo iVEN
+    // var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //optional if need to read main repo iVEN
     var RepoID = 'iVEN';
     // var NewforlderName = '700000001';
     // let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
 
     // let a = await DMSlib._DownloadFile(ObjectId,RepoID)
+    var sf = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY';
+    var tf = 'jE1Xgmc9LAHPKDZqiJOzGH_hzm75k7yIC9YJjci1DgE';
+    var ObjectId = 'BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg';
 
+    let a = await DMSlib._RenameFolder(ObjectId, RepoID, tf, sf);
     var output = {};
     output.DataSet = JSON.stringify(a);
     return output;
@@ -91,12 +95,20 @@ module.exports = cds.service.impl(function () {
   this.on("GET", "MediaFile", async (req, res) => {
     var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
     var RepoID = 'iVEN';
-    let a = await DMSlib._DownloadFile(ObjectId, RepoID);
-    var output = {};
-    output.content = a;
-    output.fileName = "test.pdf"
-    output.mediaType = "application/pdf";
+    let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
 
+    var decodedMedia = mediaObj;
+    // decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
+    // var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
+    // var output = {};
+    // output.content = a;
+    // output.fileName = "test.pdf"
+    // output.mediaType = "application/pdf";
+    return {
+      value: mediaObj,
+      '*@odata.mediaContentType': mediaType
+
+    }
     return output;
 
   });

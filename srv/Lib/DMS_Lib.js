@@ -274,6 +274,33 @@ module.exports = {
       return restxt;
     }
   },
+  _MoveObjectFTF: async function (ObjectId, RepoID, targetFolderId,sourceFolderId) {
+
+
+    const lv_JWToken = await this._fetchJwtToken();
+    let ConDMS = await cds.connect.to('DMS_Dest');
+    var path = 'browser/' + RepoID + '/root';
+    var JToken = 'Bearer ' + lv_JWToken;
+    try {
+      const data =
+        `objectId=${ObjectId}` +
+        `&cmisaction=move` +
+        `&sourceFolderId=${sourceFolderId}` +
+        `&targetFolderId=${targetFolderId}`;
+      const headers = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": JToken };
+      const Resp = await ConDMS.send("POST", path, data, headers);
+      var restxt = {};
+      restxt.name = Resp.properties["cmis:name"].value;
+      restxt.message = 'Object Moved Successfully';
+      restxt.status = 201;
+      return restxt;
+    } catch (error) {
+      var restxt = {};
+      restxt.status = error.reason.response.status;
+      restxt.statusText = error.reason.response.statusText;
+      return restxt;
+    }
+  },
   _DownloadFile: async function (ObjectID, RepoID) {
     const lv_JWToken = await this._fetchJwtToken();
     try {
@@ -288,13 +315,14 @@ module.exports = {
     }
   },
   _formatResult: async function (decodedMedia, mediaType) {
-  const readable = new Readable();
-  const result = new Array();
-  readable.push(decodedMedia);
-  // readable.push(null);
-  return {
+    const readable = new Readable();
+    const result = new Array();
+    readable.push(decodedMedia);
+    // readable.push(null);
+    return {
       value: readable,
       '*@odata.mediaContentType': mediaType
+
+    }
   }
-}
 }
