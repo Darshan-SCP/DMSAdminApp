@@ -64,7 +64,7 @@ module.exports = cds.service.impl(function () {
     var tf = 'jE1Xgmc9LAHPKDZqiJOzGH_hzm75k7yIC9YJjci1DgE';
     var ObjectId = 'BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg';
 
-    let a = await DMSlib._RenameFolder(ObjectId, RepoID, tf, sf);
+    let a = await DMSlib._MoveObjectFTF(ObjectId, RepoID, tf, sf);
     var output = {};
     output.DataSet = JSON.stringify(a);
     return output;

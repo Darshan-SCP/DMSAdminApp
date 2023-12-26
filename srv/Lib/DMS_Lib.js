@@ -297,7 +297,7 @@ module.exports = {
     } catch (error) {
       var restxt = {};
       restxt.status = error.reason.response.status;
-      restxt.statusText = error.reason.response.statusText;
+      restxt.statusText = error.reason.response.body.message;
       return restxt;
     }
   },
