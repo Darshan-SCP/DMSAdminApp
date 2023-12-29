@@ -18,7 +18,7 @@ module.exports = cds.service.impl(function () {
   this.on("GET", "RootFolder", async (req, res) => {
     //     //to get main repositorie list in DMS with storage data
     //    // exmp ->>>> _GetRepositores();
-    // let a = await DMSlib._GetRepositores();
+    let a = await DMSlib._GetRepositores();
 
     //to create main repositorie in DMS 
     //input is required exmp ->>>> _CreateRepositorie("iVEN","iVEN Main Folder");
@@ -60,11 +60,11 @@ module.exports = cds.service.impl(function () {
     // let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
 
     // let a = await DMSlib._DownloadFile(ObjectId,RepoID)
-    var sf = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY';
-    var tf = 'jE1Xgmc9LAHPKDZqiJOzGH_hzm75k7yIC9YJjci1DgE';
-    var ObjectId = 'BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg';
+    // var sf = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY';
+    // var tf = 'jE1Xgmc9LAHPKDZqiJOzGH_hzm75k7yIC9YJjci1DgE';
+    // var ObjectId = 'BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg';
 
-    let a = await DMSlib._MoveObjectFTF(ObjectId, RepoID, tf, sf);
+    // let a = await DMSlib._MoveObjectFTF(ObjectId, RepoID, tf, sf);
     var output = {};
     output.DataSet = JSON.stringify(a);
     return output;
