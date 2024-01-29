@@ -18,7 +18,7 @@ module.exports = cds.service.impl(function () {
   this.on("GET", "RootFolder", async (req, res) => {
     //     //to get main repositorie list in DMS with storage data
     //    // exmp ->>>> _GetRepositores();
-  //  let a = await DMSlib._GetRepositores();
+    //  let a = await DMSlib._GetRepositores();
 
     //to create main repositorie in DMS 
     //input is required exmp ->>>> _CreateRepositorie("iVEN","iVEN Main Folder");
@@ -59,14 +59,28 @@ module.exports = cds.service.impl(function () {
     // var NewforlderName = '700000001';
     // let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
 
-    let a = await DMSlib._DownloadFile(ObjectId,RepoID)
+    let a = await DMSlib._DownloadFile(ObjectId, RepoID)
     // var sf = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY';
     // var tf = 'jE1Xgmc9LAHPKDZqiJOzGH_hzm75k7yIC9YJjci1DgE';
     // var ObjectId = 'BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg';
 
     // let a = await DMSlib._MoveObjectFTF(ObjectId, RepoID, tf, sf);
     var output = {};
-    output.DataSet = JSON.stringify(a);
+    // output.DataSet = JSON.stringify(a);
+    var mediaObj = a;
+    if (mediaObj.length <= 0) {
+      req.reject(404, 'Media not found for the ID')
+      return
+    }
+    // var decodedMedia = "";
+    // for (var i in mediaObj) {
+    //   decodedMedia = new Buffer.from( (mediaObj[i].content.toString()).split(';base64,').pop(), 'base64');
+    // }
+
+
+    var output = await DMSlib._formatResult(mediaObj, 'application/pdf');
+    output.fileName = "test.pdf"
+    output.mediaType = "application/pdf";
     return output;
   });
   this.on("CREATE", "MediaFile", async (req, res) => {
@@ -97,11 +111,11 @@ module.exports = cds.service.impl(function () {
     var RepoID = 'iVEN';
     let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
 
-     var decodedMedia = mediaObj;
+    var decodedMedia = mediaObj;
     // var decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
     var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
-    // output.fileName = "test.pdf"
-    // output.mediaType = "application/pdf"; 
+    output.fileName = "test.pdf"
+    output.mediaType = "application/pdf"; 
     return output;
 
   });
