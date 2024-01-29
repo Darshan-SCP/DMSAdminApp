@@ -18,7 +18,7 @@ module.exports = cds.service.impl(function () {
   this.on("GET", "RootFolder", async (req, res) => {
     //     //to get main repositorie list in DMS with storage data
     //    // exmp ->>>> _GetRepositores();
-    let a = await DMSlib._GetRepositores();
+  //  let a = await DMSlib._GetRepositores();
 
     //to create main repositorie in DMS 
     //input is required exmp ->>>> _CreateRepositorie("iVEN","iVEN Main Folder");
@@ -27,8 +27,8 @@ module.exports = cds.service.impl(function () {
 
     //to delete main repository folder - avoid to use this
     //pass repository id from the data set - field name ->> id
-    // let a = await DMSlib._DeleteRepositore("3ddb38a2-ee4c-4318-8170-3d02e24e4947");
-
+    // let a = await DMSlib._DeleteRepositore("5576625b-784f-4ad1-9614-6d6bf6769a15");
+    // let a = await DMSlib._DeleteRepositore();
     //create subfolder 
     // This is to create a folder in the repository for every new book that is getting created.
 
@@ -41,7 +41,7 @@ module.exports = cds.service.impl(function () {
 
     //read subfolder data of main repo and subfolder 
 
-    // var fname = '600000001'; //optional if need to read main repo iVEN
+    // var fname = '10000008/10000009'; //optional if need to read main repo iVEN
     // var RepoID = 'iVEN';
     // let a = await DMSlib._getSubFolderItems(RepoID, fname);
 
@@ -54,12 +54,12 @@ module.exports = cds.service.impl(function () {
 
     // to rename any folder - pass folder id
     //_RenameFolder: async function (ObjectId, RepoID, NewforlderName)
-    // var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //optional if need to read main repo iVEN
+    var ObjectId = '1jcIftykacdLzWQ6dAXjuFH9lAAIlix_eZ3bXN6cSxI'; //optional if need to read main repo iVEN
     var RepoID = 'iVEN';
     // var NewforlderName = '700000001';
     // let a = await DMSlib._RenameFolder(ObjectId, RepoID, NewforlderName);
 
-    // let a = await DMSlib._DownloadFile(ObjectId,RepoID)
+    let a = await DMSlib._DownloadFile(ObjectId,RepoID)
     // var sf = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY';
     // var tf = 'jE1Xgmc9LAHPKDZqiJOzGH_hzm75k7yIC9YJjci1DgE';
     // var ObjectId = 'BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg';
@@ -97,18 +97,11 @@ module.exports = cds.service.impl(function () {
     var RepoID = 'iVEN';
     let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
 
-    var decodedMedia = mediaObj;
-    // decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
-    // var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
-    // var output = {};
-    // output.content = a;
+     var decodedMedia = mediaObj;
+    // var decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
+    var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
     // output.fileName = "test.pdf"
-    // output.mediaType = "application/pdf";
-    return {
-      value: mediaObj,
-      '*@odata.mediaContentType': mediaType
-
-    }
+    // output.mediaType = "application/pdf"; 
     return output;
 
   });

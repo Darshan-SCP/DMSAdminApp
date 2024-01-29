@@ -52,7 +52,9 @@ module.exports = {
       var JToken = 'Bearer ' + lv_JWToken;
       const Resp = await ConDMS.send('GET', '/rest/v2/repositories', '', { 'Authorization': JToken });
       const StorageData = await ConDMS.send('GET', '/rest/v2/usage/storage', '', { 'Authorization': JToken });
-      var StorageDataRepoList = StorageData.usageListOfTenants[0].perTenantStorageUsageList.storageUsagePerRepository;
+      if (StorageData.usageListOfTenants[0].hasOwnProperty('perTenantStorageUsageList')) {
+        var StorageDataRepoList = StorageData.usageListOfTenants[0].perTenantStorageUsageList.storageUsagePerRepository;
+      }
       var output = [];
       var MainFolderlist = Resp.repoAndConnectionInfos;
       if (MainFolderlist) {
@@ -67,11 +69,13 @@ module.exports = {
             item.repositoryType = MainFolderlistvalue.repository.repositoryType;
             item.cmisRepositoryId = MainFolderlistvalue.repository.cmisRepositoryId;
             item.createdTime = MainFolderlistvalue.repository.createdTime;
+            if(StorageDataRepoList !== undefined){
             StorageDataRepoList.forEach(function (StorageDataRepoListValue) {
               if (StorageDataRepoListValue.repositoryId === item.id)
                 item.storage_metrics = StorageDataRepoListValue.metrics;
               item.storage_usage = StorageDataRepoListValue.usage;
             });
+          }
             output.push(item);
           });
         } else {
@@ -83,11 +87,13 @@ module.exports = {
           item.repositoryType = MainFolderlist.repository.repositoryType;
           item.cmisRepositoryId = MainFolderlist.repository.cmisRepositoryId;
           item.createdTime = MainFolderlist.repository.createdTime;
+          if(StorageDataRepoList !== undefined){
           StorageDataRepoList.forEach(function (StorageDataRepoListValue) {
             if (StorageDataRepoListValue.repositoryId === item.id)
               item.storage_metrics = StorageDataRepoListValue.metrics;
             item.storage_usage = StorageDataRepoListValue.usage;
           });
+        }
           output.push(item);
         }
         return output;
@@ -333,7 +339,7 @@ module.exports = {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
       const Resp = await ConDMS.send('GET',
-        'browser/iVEN/root?objectId=BSARfyLKYktcDDkfAMgDxT0iEl0vNE71hS3DbM9LQbg&download=attachment'
+        'browser/iVEN/root?objectId=1jcIftykacdLzWQ6dAXjuFH9lAAIlix_eZ3bXN6cSxI&=attachment'
         , '', { 'Authorization': JToken });
       return Resp;
     } catch (error) {
@@ -344,7 +350,7 @@ module.exports = {
     const readable = new Readable();
     const result = new Array();
     readable.push(decodedMedia);
-    // readable.push(null);
+    //  readable.push(null);
     return {
       value: readable,
       '*@odata.mediaContentType': mediaType
