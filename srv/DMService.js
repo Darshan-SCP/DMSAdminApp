@@ -129,7 +129,7 @@ module.exports = cds.service.impl(function () {
     // var decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
     var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
 
-    req._.res.set('Content-disposition', 'attachment; filename=test.pdf');
+    req._.res.set('Content-disposition', 'attachment; filename=Quick_Time_Entry.pdf');
     req._.res.set('Content-type', 'application/pdf');
     // req._.res.charset = 'UTF-8';
     req._.res.set('transfer-encoding', 'chunked');
