@@ -352,7 +352,7 @@ module.exports = {
     readable.push(decodedMedia);
      readable.push(null);
     return {
-      value: readable,
+      value: result,
       '*@odata.mediaContentType': mediaType
 
     }

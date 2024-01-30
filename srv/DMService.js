@@ -119,6 +119,32 @@ module.exports = cds.service.impl(function () {
     return output;
 
   });
+  this.on('DA', async (req,res) => {
+
+    var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
+    var RepoID = 'iVEN';
+    let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
+
+    var decodedMedia = mediaObj;
+    // var decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
+    var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
+
+    req._.res.set('Content-disposition', 'attachment; filename=test.pdf');
+    req._.res.set('Content-type', 'application/pdf');
+    // req._.res.charset = 'UTF-8';
+    req._.res.set('transfer-encoding', 'chunked');
+    req._.res.chunkedEncoding = true ;
+    req._.res.send(mediaObj);
+    req._.res.end();
+    // output.fileName = "test.pdf"
+    // output.mediaType = "application/pdf"; 
+    // return output;
+
+
+
+
+
+  });
 
 });
 

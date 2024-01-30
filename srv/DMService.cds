@@ -7,4 +7,5 @@ service DMS_SRV {
     entity GetRootData as projection on dmsm.GetRootData;
     entity RootFolder as projection on dmsm.RootFolder;
     entity MediaFile as projection on tbl.MediaFile;
+    function DA() returns many String;
 }
