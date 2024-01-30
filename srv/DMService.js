@@ -131,10 +131,10 @@ module.exports = cds.service.impl(function () {
 
     req._.res.set('Content-disposition', 'attachment; filename=Quick_Time_Entry.pdf');
     req._.res.set('Content-type', 'application/pdf');
-    // req._.res.charset = 'UTF-8';
+     req._.res.charset = 'UTF-8';
     req._.res.set('transfer-encoding', 'chunked');
     req._.res.chunkedEncoding = true ;
-    req._.res.send(mediaObj);
+    req._.res.write("mediaObj");
     req._.res.end();
     // output.fileName = "test.pdf"
     // output.mediaType = "application/pdf"; 

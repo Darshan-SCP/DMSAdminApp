@@ -339,7 +339,7 @@ module.exports = {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
       const Resp = await ConDMS.send('GET',
-        'browser/iVEN/root?objectId=1jcIftykacdLzWQ6dAXjuFH9lAAIlix_eZ3bXN6cSxI&=attachment'
+        'browser/iVEN/root?objectId=pZ4G52V9y9eZ1lG0E-QEoqJCoz2dxK8qNRzubbVnSsI&=attachment'
         , '', { 'Authorization': JToken });
       return Resp;
     } catch (error) {
