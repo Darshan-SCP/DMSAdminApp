@@ -1,7 +1,8 @@
 # CAP DMSAdminApp
 _out
 *.db
-*.sqlite
+#*.sqlite
+#cds deploy --to sqlite:db.sqlite
 connection.properties
 #default-*.json
 .cdsrc-private.json
