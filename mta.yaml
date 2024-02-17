@@ -23,6 +23,7 @@ modules:
           srv-url: ${default-url}
     requires:
       - name: DMSAdminApp-db
+      - name: DMSAdminApp-destination
 
   - name: DMSAdminApp-db-deployer
     type: hdb
@@ -38,3 +39,8 @@ resources:
     parameters:
       service: hana
       service-plan: hdi-shared
+  - name: DMSAdminApp-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
