@@ -84,7 +84,7 @@ module.exports = cds.service.impl(function () {
     output.description = a ;
     return output;
   });
-  this.on("CREATE", "MediaFile", async (req, res) => {
+  this.before("POST", "MediaFile", async (req, res) => {
     // var ID = randomUUID();
 
     const url = req._.req.path;
@@ -107,46 +107,54 @@ module.exports = cds.service.impl(function () {
     return output
 
   });
-  this.on("POST", "MediaFile", async (req, res) => {
-    var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
-    var RepoID = 'iVEN';
-    let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
+  this.on("GET", "MediaFile", async (req, res) => {
+    // var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
+    // var RepoID = 'iVEN';
+    // let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
 
-    var decodedMedia = mediaObj;
-    // var decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
-    var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
-    output.fileName = "test.pdf"
-    output.mediaType = "application/pdf"; 
+    // var decodedMedia = mediaObj;
+    // // var decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
+    // var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
+    // output.fileName = "test.pdf"
+    // output.mediaType = "application/pdf"; 
     return output;
 
   });
-  this.on('DA', async (req,res) => {
-
-    var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
+  this.on("GET",'DA', async (req,res) => {
+    // xVvUFquAeZgGWIWtJI2metbuxvnNGqF1U5dN69QVuGQ
+   // var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
+    var ObjectId = 'MkXEZobpf3JOvz1jRD_pl9Z1ewcyXRFVNbwG--2DKPM';
     var RepoID = 'iVEN';
     let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
 
-    var decodedMedia = mediaObj;
+    // var decodedMedia = mediaObj;
     // var decodedMedia = new Buffer.from(mediaObj[0].content.toString().split(";base64,").pop(), "base64");
-    var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
-
-    req._.res.set('Content-disposition', 'attachment; filename=Quick_Time_Entry.pdf');
-    req._.res.set('Content-type', 'application/pdf');
-     req._.res.charset = 'UTF-8';
-    req._.res.set('transfer-encoding', 'chunked');
-    req._.res.chunkedEncoding = true ;
-    req._.res.write("mediaObj");
+    //var output = await DMSlib._formatResult(decodedMedia, 'application/pdf');
+   // var blob = new Blob([mediaObj], {type: "application/pdf"});
+    // mediaObj = 'data:"application/pdf";base64,' + mediaObj;
+    req._.res.set('Content-disposition', 'attachment;filename=filjson.json');
+    req._.res.set('Content-type', 'application/json');
+    req._.res.charset = 'UTF-8';
+     req._.res.set('transfer-encoding', 'chunked');
+     req._.res.chunkedEncoding = true ;
+    
+    var resObj = JSON.stringify(mediaObj);
+    req._.res.write(resObj);
     req._.res.end();
-    // output.fileName = "test.pdf"
-    // output.mediaType = "application/pdf"; 
-    // return output;
-
-
-
-
+ 
 
   });
+  this.on("POST",'DA', async (req,res) => {
+    // xVvUFquAeZgGWIWtJI2metbuxvnNGqF1U5dN69QVuGQ
+   // var ObjectId = '427nKXGdTqb2-kxgLGpRzYe2k8m_lc3ubpRYfUXFhaY'; //opt
+    // var ObjectId = 'MkXEZobpf3JOvz1jRD_pl9Z1ewcyXRFVNbwG--2DKPM';
+    // var RepoID = 'iVEN';
+    // let mediaObj = await DMSlib._DownloadFile(ObjectId, RepoID);
 
+  
+ return "ok";
+
+  });
 });
 
 

@@ -338,9 +338,8 @@ module.exports = {
     try {
       let ConDMS = await cds.connect.to('DMS_Dest');
       var JToken = 'Bearer ' + lv_JWToken;
-      const Resp = await ConDMS.send('GET',
-        'browser/iVEN/root?objectId=pZ4G52V9y9eZ1lG0E-QEoqJCoz2dxK8qNRzubbVnSsI&=attachment'
-        , '', { 'Authorization': JToken });
+      var url =   'browser/' + RepoID + '/root?objectId=' + ObjectID +'&download=attachment' ;
+      const Resp = await ConDMS.send('GET', url , '', { 'Authorization': JToken });
       return Resp;
     } catch (error) {
       console.error();
@@ -351,7 +350,7 @@ module.exports = {
     const result = new Array();
     readable.push(decodedMedia);
      readable.push(null);
-    return {
+     return {
       value: result,
       '*@odata.mediaContentType': mediaType
 

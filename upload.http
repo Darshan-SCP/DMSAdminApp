@@ -2,10 +2,24 @@
 @port=4004
 @protocol=http
 
-POST  {{protocol}}://{{host}}:{{port}}/odata/v2/dms-srv/MediaFile(1f625369-0294-47c4-bc0a-6755ddc31b8d)/content   HTTP/1.1
+POST  {{protocol}}://{{host}}:{{port}}/odata/v2/dms-srv/MediaFile   HTTP/1.1
 Content-Type: application/pdf
 slug: invoice.pdf
 
 < ./invoice.pdf
+
+HTTP/1.1 500  - Internal Server Error
+x-powered-by: Express
+x-request-id: 97e26c65-5e90-482a-b529-33d20407efce
+x-correlation-id: 97e26c65-5e90-482a-b529-33d20407efce
+x-correlationid: 97e26c65-5e90-482a-b529-33d20407efce
+content-type: application/json; charset=utf-8
+content-length: 367
+etag: W/"16f-2uS5rs7LGoWl0uRk773nOdxEKFQ"
+date: Wed, 27 Mar 2024 05:36:55 GMT
+connection: close
 ###
+@host=localhost
+@port=4004
+@protocol=http
 GET   {{protocol}}://{{host}}:{{port}}/odata/v2/dms-srv/MediaFile(guid'1f625369-0294-47c4-bc0a-6755ddc31b8d')/$value  HTTP/1.1
