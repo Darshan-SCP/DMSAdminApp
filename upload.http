@@ -1,3 +1,20 @@
+
+
+HTTP/1.1 500  - Internal Server Error
+x-powered-by: Express
+x-request-id: 546ea1ef-83b7-4daf-86f5-7c38a5e23aab
+x-correlation-id: 546ea1ef-83b7-4daf-86f5-7c38a5e23aab
+x-correlationid: 546ea1ef-83b7-4daf-86f5-7c38a5e23aab
+content-type: application/json; charset=utf-8
+content-length: 367
+etag: W/"16f-2uS5rs7LGoWl0uRk773nOdxEKFQ"
+date: Thu, 28 Mar 2024 15:34:45 GMT
+connection: close
+###
+
+###
+
+###
 @host=localhost
 @port=4004
 @protocol=http
@@ -7,17 +24,6 @@ Content-Type: application/pdf
 slug: invoice.pdf
 
 < ./invoice.pdf
-
-HTTP/1.1 500  - Internal Server Error
-x-powered-by: Express
-x-request-id: 97e26c65-5e90-482a-b529-33d20407efce
-x-correlation-id: 97e26c65-5e90-482a-b529-33d20407efce
-x-correlationid: 97e26c65-5e90-482a-b529-33d20407efce
-content-type: application/json; charset=utf-8
-content-length: 367
-etag: W/"16f-2uS5rs7LGoWl0uRk773nOdxEKFQ"
-date: Wed, 27 Mar 2024 05:36:55 GMT
-connection: close
 ###
 @host=localhost
 @port=4004

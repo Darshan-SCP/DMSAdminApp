@@ -356,4 +356,62 @@ module.exports = {
 
     }
   }
+  _DownloadFile: async function (ObjectID, RepoID) {
+    const lv_JWToken = await this._fetchJwtToken();
+    try {
+      let ConDMS = await cds.connect.to('BTP_DMS_Dest');
+      var JToken = 'Bearer ' + lv_JWToken;
+    //   var path = 'browser/' + RepoID + '/root?objectId='+ ObjectID +'&=attachment';
+      var path = 'browser/' + RepoID + '/root?objectId='+ ObjectID +'&download=attachment';   
+      const Resp = await ConDMS.send('GET', path  , '', {'responseType': 'arraybuffer','Authorization': JToken }) ;
+    //   const fileBuffer = await new OpenApiRequestBuilder('GET', path,'',{'Authorization': JToken })
+    //     .addCustomRequestConfiguration({ responseType: 'arraybuffer'})       
+    //     .execute({ destinationName: 'BTP_DMS_Dest' });     
+      return Resp;            
+    //   return fileBuffer;              
+      
+    } catch (error) {
+      var restxt = {};
+      restxt.status = error.reason.response.status;
+      restxt.statusText = error.reason.response.body.message;
+      throw restxt;
+    }
+},
+_UploadFile: async function (RepoID,folderId,fileName,fileMimeType,fileContent) {       
+    const lv_JWToken = await this._fetchJwtToken();
+    try {
+      let ConDMS = await cds.connect.to('BTP_DMS_Dest');
+      var JToken = 'Bearer ' + lv_JWToken;
+      var path = 'browser/' + RepoID + '/root';         
+      var bufferFileContent=Buffer.from(fileContent,"base64");                     
+    //   var bufferFileContent=Buffer.from(fileContent,"base64");         
+      const blobContent = new Blob([bufferFileContent], { type: fileMimeType });  
+      const fileOpt={
+        filename:fileName,     
+        contentType:fileMimeType   
+      }                        
+      var form = new FormData();    
+      form.append("objectId",folderId);                
+    //   form.append("succinct", "true");       
+      form.append("cmisaction", "createDocument");
+      form.append("propertyId[0]", "cmis:objectTypeId");
+      form.append("propertyValue[0]", "cmis:document");
+      form.append("propertyId[1]", "cmis:name");
+      form.append("propertyValue[1]",fileName);   
+      form.append("includeAllowableActions", "true"); 
+      form.append("_charset_", "UTF-8");                 
+      form.append("filename", blobContent, fileOpt);                        
+      form.append("media","binary");                                  
+      const headers = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": JToken };           
+    //   const Resp = await ConDMS.send('POST',path, form,headers) ;                  
+      const Resp = await ConDMS.send('POST',path, form,headers) ;                            
+      return Resp;                                 
+      
+    } catch (error) {
+      var restxt = {};
+      restxt.status = error.reason.response.status;
+      restxt.statusText = error.reason.response.body.message;
+      throw restxt;
+    }
+},
 }
